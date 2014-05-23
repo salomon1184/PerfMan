@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Params>
+    <Item Name="emailToggle">on</Item>
+    <Item Name="emailHost">mail.renren-inc.com</Item>
+    <Item Name="emailPort">25</Item>
+    <Item Name="emailSender">defu.li@renren-inc.com</Item>
+    <Item Name="emailPassword">7ujm&amp;*()</Item>
+    <Items Name="processes">
+        <Value>com.quad</Value>
+        <Value>com.renren</Value>
+    </Items>
+    
+</Params>
