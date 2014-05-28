@@ -30,6 +30,7 @@ public class Counter {
 			String line = bReader.readLine();
 			String[] ss = line.split(Helper.SEPARTORFLAG);
 			data.setMin(Float.parseFloat(ss[1]));
+			total += Float.parseFloat(ss[1]);
 			while ((line = bReader.readLine()) != null) {
 				String[] splits = line.split(Helper.SEPARTORFLAG);
 				float temp = Float.parseFloat(splits[1]);
