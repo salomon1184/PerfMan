@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 
 import com.salomon.perfman.model.PerfData;
+import com.salomon.perfman.util.Arith;
 import com.salomon.perfman.util.Helper;
 
 public class Counter {
@@ -30,11 +31,12 @@ public class Counter {
 			String line = bReader.readLine();
 			String[] ss = line.split(Helper.SEPARTORFLAG);
 			data.setMin(Float.parseFloat(ss[1]));
+			data.setMax(Float.parseFloat(ss[1]));
 			total += Float.parseFloat(ss[1]);
 			while ((line = bReader.readLine()) != null) {
 				String[] splits = line.split(Helper.SEPARTORFLAG);
 				float temp = Float.parseFloat(splits[1]);
-				total += temp;
+				total = Arith.floatAdd(total, temp);
 
 				if (data.getMin() > temp) {
 					data.setMin(temp);
@@ -47,7 +49,7 @@ public class Counter {
 				index++;
 			}
 
-			data.setAva(total / index);
+			data.setAva(Arith.floatDiv(total, index, 3));
 
 			reader.close();
 			return data;
