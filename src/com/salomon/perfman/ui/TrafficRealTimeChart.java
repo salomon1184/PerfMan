@@ -24,10 +24,34 @@ public class TrafficRealTimeChart extends ChartPanel implements Runnable {
 	private final long value = 0;
 	boolean makeStop = false;
 	private final AndroidUtility utility;
-	private final Phone phone;
-	private final String packName;
-	private final TextRecorder recorder;
-	private final float startNum;
+	private Phone phone;
+	private String packName;
+	private TextRecorder recorder;
+	private float startNum;
+
+	public Phone getPhone() {
+		return this.phone;
+	}
+
+	public void setPhone(Phone phone) {
+		this.phone = phone;
+	}
+
+	public String getPackName() {
+		return this.packName;
+	}
+
+	public void setPackName(String packName) {
+		this.packName = packName;
+	}
+
+	public void setRecorder(TextRecorder recorder) {
+		this.recorder = recorder;
+	}
+
+	public void setStartNum(float startNum) {
+		this.startNum = startNum;
+	}
 
 	public TextRecorder getRecorder() {
 		return this.recorder;
@@ -37,15 +61,10 @@ public class TrafficRealTimeChart extends ChartPanel implements Runnable {
 		return this.startNum;
 	}
 
-	public TrafficRealTimeChart(Phone phone, String packageName,
-			String chartContent, String title, String yaxisName) {
+	public TrafficRealTimeChart(String chartContent, String title,
+			String yaxisName) {
 		super(createChart(chartContent, title, yaxisName));
 		this.utility = new AndroidUtility(Utility.getMachineType());
-
-		this.phone = phone;
-		this.packName = packageName;
-		this.recorder = new TextRecorder(phone, packageName, "traffic");
-		this.startNum = this.utility.getTrafficValue(this.phone, this.packName);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -99,10 +118,5 @@ public class TrafficRealTimeChart extends ChartPanel implements Runnable {
 	public void stop() {
 		this.makeStop = true;
 		timeSeries.clear();
-	}
-
-	private long randomNum() {
-		System.out.println(((Math.random() * 20) + 80));
-		return (long) ((Math.random() * 20) + 80);
 	}
 }

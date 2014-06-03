@@ -25,6 +25,7 @@ import org.jfree.chart.JFreeChart;
 
 import com.salomon.perfman.controller.Counter;
 import com.salomon.perfman.controller.FileSelectionAdapter;
+import com.salomon.perfman.controller.TextRecorder;
 import com.salomon.perfman.model.PerfData;
 import com.salomon.perfman.model.Phone;
 import com.salomon.perfman.util.AndroidUtility;
@@ -82,7 +83,8 @@ public class PerfMan {
 				phones.toArray(new Phone[phones.size()]));
 		panel_controller.setLayout(null);
 
-		JComboBox<Phone> comboBox_phone = new JComboBox<Phone>(phoneBoxModel);
+		final JComboBox<Phone> comboBox_phone = new JComboBox<Phone>(
+				phoneBoxModel);
 		comboBox_phone.setBounds(77, 5, 169, 25);
 		panel_controller.add(comboBox_phone);
 
@@ -100,7 +102,7 @@ public class PerfMan {
 		processes = ParamRetriever.getParam().getParams("processes");
 		DefaultComboBoxModel<String> processbBoxModel = new DefaultComboBoxModel<String>(
 				processes.toArray(new String[processes.size()]));
-		JComboBox<String> comboBox_process = new JComboBox<String>(
+		final JComboBox<String> comboBox_process = new JComboBox<String>(
 				processbBoxModel);
 		comboBox_process.setBounds(77, 41, 169, 25);
 		panel_controller.add(comboBox_process);
@@ -193,16 +195,13 @@ public class PerfMan {
 		panel_dataview.setLayout(null);
 
 		final MemRealTimeChart rtcMem = new MemRealTimeChart(
-				(Phone) comboBox_phone.getSelectedItem(),
-				(String) comboBox_process.getSelectedItem(),
 				"Memeory Real-time (Mb)", "Memeory", "value");
+
 		rtcMem.setVisible(true);
 		rtcMem.setBounds(10, 10, 650, 200);
 		panel_dataview.add(rtcMem);
 
 		final CpuRealTimeChart rtcCpu = new CpuRealTimeChart(
-				(Phone) comboBox_phone.getSelectedItem(),
-				(String) comboBox_process.getSelectedItem(),
 				"CPU Real-time (%)", "CPU", "value");
 
 		rtcCpu.setVisible(true);
@@ -210,9 +209,8 @@ public class PerfMan {
 		panel_dataview.add(rtcCpu);
 
 		final TrafficRealTimeChart rtcTraffic = new TrafficRealTimeChart(
-				(Phone) comboBox_phone.getSelectedItem(),
-				(String) comboBox_process.getSelectedItem(),
-				"Traffic Real-time (Kb)", "Traffic", "value");
+
+		"Traffic Real-time (Kb)", "Traffic", "value");
 
 		rtcTraffic.setVisible(true);
 		rtcTraffic.setBounds(10, 410, 650, 200);
@@ -226,11 +224,25 @@ public class PerfMan {
 		btnStart.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				Phone phone = (Phone) comboBox_phone.getSelectedItem();
+				String packName = (String) comboBox_process.getSelectedItem();
+				rtcMem.setPhone(phone);
+				rtcMem.setPackName(packName);
+				rtcMem.setRecorder(new TextRecorder(phone, packName, "memory"));
+				rtcCpu.setPhone(phone);
+				rtcCpu.setPackName(packName);
+				rtcCpu.setRecorder(new TextRecorder(phone, packName, "cpu"));
+				rtcTraffic.setPhone(phone);
+				rtcTraffic.setPackName(packName);
+				rtcTraffic.setRecorder(new TextRecorder(phone, packName,
+						"traffic"));
+
 				Thread samplerThread = new Thread(rtcMem);
 				rtcMem.reset();
 				samplerThread.start();
 
 				Thread cpusamplerThread = new Thread(rtcCpu);
+
 				rtcCpu.reset();
 				cpusamplerThread.start();
 

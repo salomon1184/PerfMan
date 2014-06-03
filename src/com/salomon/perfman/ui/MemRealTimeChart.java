@@ -24,22 +24,37 @@ public class MemRealTimeChart extends ChartPanel implements Runnable {
 	private final long value = 0;
 	boolean makeStop = false;
 	private final AndroidUtility utility;
-	private final Phone phone;
-	private final String packName;
-	private final TextRecorder recorder;
+	private Phone phone;
+	private String packName;
+	private TextRecorder recorder;
 
 	public TextRecorder getRecorder() {
 		return this.recorder;
 	}
 
-	public MemRealTimeChart(Phone phone, String packageName,
-			String chartContent, String title, String yaxisName) {
+	public Phone getPhone() {
+		return this.phone;
+	}
+
+	public void setPhone(Phone phone) {
+		this.phone = phone;
+	}
+
+	public String getPackName() {
+		return this.packName;
+	}
+
+	public void setPackName(String packName) {
+		this.packName = packName;
+	}
+
+	public void setRecorder(TextRecorder recorder) {
+		this.recorder = recorder;
+	}
+
+	public MemRealTimeChart(String chartContent, String title, String yaxisName) {
 		super(createChart(chartContent, title, yaxisName));
 		this.utility = new AndroidUtility(Utility.getMachineType());
-
-		this.phone = phone;
-		this.packName = packageName;
-		this.recorder = new TextRecorder(phone, packageName, "memory");
 	}
 
 	@SuppressWarnings("deprecation")
@@ -92,10 +107,5 @@ public class MemRealTimeChart extends ChartPanel implements Runnable {
 	public void stop() {
 		this.makeStop = true;
 		timeSeries.clear();
-	}
-
-	private long randomNum() {
-		System.out.println(((Math.random() * 20) + 80));
-		return (long) ((Math.random() * 20) + 80);
 	}
 }
