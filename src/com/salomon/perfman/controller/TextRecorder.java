@@ -29,14 +29,14 @@ public class TextRecorder {
 
 		this.logPath = Helper.combineStrings(Config.ROOTPATH_LOG,
 				Utility.getFormatDate("yyyyMMdd"), File.separator,
-				phone.toString(), File.separator, packageName, File.separator);
+				phone.toString(), File.separator, packageName, File.separator
+						+ Utility.getFormatDate("HHmmss") + File.separator);
 		File rootFile = new File(this.logPath);
 		if (!rootFile.exists()) {
 			rootFile.mkdirs();
 		}
 
-		this.fileName = fileFlag + "_" + Utility.getFormatDate("HHmmss")
-				+ ".log";
+		this.fileName = fileFlag + "_" + ".log";
 	}
 
 	public void writePerfDataToFile(String perfData) {

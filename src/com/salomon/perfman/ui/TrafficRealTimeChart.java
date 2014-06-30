@@ -27,7 +27,7 @@ public class TrafficRealTimeChart extends ChartPanel implements Runnable {
 	private Phone phone;
 	private String packName;
 	private TextRecorder recorder;
-	private float startNum;
+	private float startNum = 100000000;
 
 	public Phone getPhone() {
 		return this.phone;
@@ -65,6 +65,7 @@ public class TrafficRealTimeChart extends ChartPanel implements Runnable {
 			String yaxisName) {
 		super(createChart(chartContent, title, yaxisName));
 		this.utility = new AndroidUtility(Utility.getMachineType());
+
 	}
 
 	@SuppressWarnings("deprecation")
@@ -101,6 +102,12 @@ public class TrafficRealTimeChart extends ChartPanel implements Runnable {
 				// /FIXME 更换为Traffic监控值
 				long trafficData = this.utility.getTrafficValue(this.phone,
 						this.packName);
+
+				if (this.startNum > trafficData) {
+					this.startNum = this.utility.getTrafficValue(this.phone,
+							this.packName);
+				}
+
 				timeSeries.add(new Millisecond(), trafficData - this.startNum);
 				this.recorder.writePerfDataToFile(Long.toString(trafficData));
 
